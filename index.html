@@ -7,11 +7,11 @@
 <meta name="description" content="A boutique marketing program for family dental practices. Helping you become the most trusted practice in your community."/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.3/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="./css/styles.css"/>
+<link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
 
-<!-- Shared Header (injected by components.js) -->
+<!-- Shared Header -->
 <div id="site-header"></div>
 
 <!-- HERO -->
@@ -99,7 +99,7 @@
     </div>
     <p style="font-size:.82rem;color:var(--gray);margin-bottom:28px">All figures over five years, based on conservative fee averages.</p>
     <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-      <a href="./pages/calculator.html" target="_blank" style="display:inline-flex;align-items:center;gap:9px;background:var(--teal);color:var(--white);text-decoration:none;padding:13px 28px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.04em;" onmouseover="this.style.background='var(--teal2)'" onmouseout="this.style.background='var(--teal)'">
+      <a href="calculator.html" target="_blank" style="display:inline-flex;align-items:center;gap:9px;background:var(--teal);color:var(--white);text-decoration:none;padding:13px 28px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.04em;" onmouseover="this.style.background='var(--teal2)'" onmouseout="this.style.background='var(--teal)'">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         Run the numbers for your practice
       </a>
@@ -246,13 +246,11 @@
 </section>
 
 
-<!-- Shared Footer (injected by components.js) -->
+<!-- Shared Footer -->
 <div id="site-footer"></div>
 
-<script src="./js/components.js"></script>
+<script src="components.js"></script>
 <script>
-// ─── SECURE FORM HANDLER ───
-// Uses server-side endpoint to protect API keys
 async function handleSubmit(){
   var fn=document.getElementById('fn').value.trim();
   var ln=document.getElementById('ln').value.trim();
@@ -267,21 +265,18 @@ async function handleSubmit(){
   if(!em||!em.includes('@')){alert('Please enter a valid email address.');return;}
   if(!pr){alert('Please enter your practice name.');return;}
 
-  // Attempt server-side submission (API keys stay hidden)
   var result = await submitContactForm({
     firstName: fn, lastName: ln, email: em, phone: ph,
     practice: pr, location: loc, focus: fc, message: msg
   });
 
-  // Show thank-you regardless (form data captured or not)
   document.getElementById('form-block').classList.add('hidden');
   document.getElementById('thank-you').classList.add('visible');
   document.getElementById('conv').scrollIntoView({behavior:'smooth'});
 
-  if (!result.success) {
-    console.warn('Form backend:', result.message);
-  }
+  if (!result.success) { console.warn('Form backend:', result.message); }
 }
+
 function downloadProposal(){
   if(!window.jspdf){alert('PDF library still loading — please try again in a moment.');return;}
   var jsPDF=window.jspdf.jsPDF;
