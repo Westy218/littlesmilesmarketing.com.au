@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Family Patient Value | Little Smiles</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1a3a4a;--teal:#3dbcb8;--teal2:#52d4d0;
+  --gold:#e8834a;--gold2:#f0a070;
+  --cream:#f7f3ec;--cream2:#efe9de;
+  --white:#fff;--gray:#5a6373;--lightgray:#e4ecee;--green:#2a9d5c;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);min-height:100vh;-webkit-font-smoothing:antialiased}
+.header{background:var(--navy);padding:28px 5%;text-align:center}
+.header-label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:8px;font-weight:500}
+.header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--white);font-weight:500;line-height:1.25}
+.header h1 em{color:var(--gold2);font-style:italic}
+.header-sub{color:rgba(255,255,255,.55);font-size:.9rem;margin-top:10px;max-width:560px;margin-left:auto;margin-right:auto}
+.container{max-width:960px;margin:0 auto;padding:40px 5%}
+.section-card{background:var(--white);border-radius:10px;padding:32px;margin-bottom:24px;border:1px solid var(--lightgray)}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--navy);font-weight:500;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.section-title .icon{font-size:1.3rem}
+.section-subtitle{font-size:.82rem;color:var(--gray);margin-bottom:20px}
+.member-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:600px){.member-grid{grid-template-columns:1fr}}
+.member-card{background:var(--cream);border-radius:8px;padding:22px}
+.member-card.adult{background:#eef4f7}
+.member-name{font-weight:600;font-size:.93rem;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{font-size:.58rem;padding:3px 8px;border-radius:100px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--white)}
+.badge-teal{background:var(--teal)}.badge-gold{background:var(--gold)}.badge-navy{background:var(--navy)}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:.72rem;font-weight:500;color:var(--gray);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px}
+.field input[type="number"]{width:100%;padding:9px 12px;border:1.5px solid var(--lightgray);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--navy);background:var(--white);outline:none;transition:border-color .18s}
+.field input[type="number"]:focus{border-color:var(--teal)}
+.field .hint{font-size:.72rem;color:var(--gray);margin-top:4px;font-style:italic}
+.toggle-row{display:flex;align-items:center;gap:10px;margin-top:4px}
+.toggle{position:relative;width:42px;height:24px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.tslider{position:absolute;inset:0;background:#ccd8e8;border-radius:100px;cursor:pointer;transition:background .2s}
+.tslider::before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:var(--white);border-radius:50%;transition:transform .2s}
+.toggle input:checked+.tslider{background:var(--teal)}
+.toggle input:checked+.tslider::before{transform:translateX(18px)}
+.toggle-label{font-size:.84rem;color:var(--navy)}
+.assumptions{background:var(--white);border-radius:10px;padding:32px;margin-bottom:24px;border:1px solid var(--lightgray)}
+.assumptions h2{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--navy);font-weight:500;margin-bottom:6px}
+.assumptions-note{font-size:.82rem;color:var(--gray);margin-bottom:20px}
+.fee-label{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);border-bottom:1px solid var(--lightgray);padding-bottom:6px;margin-bottom:14px;margin-top:20px}
+.assumptions-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.assumptions-grid{grid-template-columns:1fr}}
+.results{background:var(--navy);border-radius:10px;padding:32px;margin-bottom:24px}
+.results-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--white);font-weight:500;margin-bottom:24px}
+.result-total{text-align:center;background:rgba(255,255,255,.06);border:1px solid rgba(61,188,184,.3);border-radius:8px;padding:28px;margin-bottom:24px}
+.result-total-label{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:8px}
+.result-total-value{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,6vw,3.8rem);color:var(--teal2);line-height:1}
+.result-total-sub{font-size:.82rem;color:rgba(255,255,255,.45);margin-top:8px}
+.result-grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:18px}
+@media(max-width:700px){.result-grid-4{grid-template-columns:1fr 1fr}}
+.result-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.result-card{background:rgba(255,255,255,.06);border-radius:8px;padding:16px}
+.result-card-label{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:6px}
+.result-card-value{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--white);line-height:1}
+.result-card-value.gold{color:var(--gold2)}.result-card-value.teal{color:var(--teal2)}
+.result-card-sub{font-size:.72rem;color:rgba(255,255,255,.38);margin-top:4px}
+.breakdown{margin-top:20px}
+.breakdown-title{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px}
+.year-row{display:grid;grid-template-columns:60px 1fr 90px;align-items:center;gap:10px;margin-bottom:8px}
+.year-label{font-size:.78rem;color:rgba(255,255,255,.5);font-weight:500}
+.year-bar-wrap{background:rgba(255,255,255,.08);border-radius:100px;height:8px;overflow:hidden}
+.year-bar{height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));border-radius:100px;transition:width .5s ease}
+.year-value{font-size:.83rem;color:var(--white);text-align:right;font-weight:500}
+.multiplier{background:var(--white);border-radius:10px;padding:32px;margin-bottom:24px;border:1px solid var(--lightgray)}
+.multiplier h2{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--navy);font-weight:500;margin-bottom:6px}
+.multiplier-note{font-size:.82rem;color:var(--gray);margin-bottom:20px}
+.families-slider{width:100%;margin:12px 0;accent-color:var(--teal)}
+.families-value{font-family:'Cormorant Garamond',serif;font-size:2.6rem;color:var(--navy);text-align:center;margin-bottom:4px}
+.families-label{font-size:.78rem;color:var(--gray);text-align:center;margin-bottom:20px}
+.multiplier-result{background:var(--cream);border-radius:8px;padding:22px;text-align:center}
+.multiplier-result-value{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--green);margin-bottom:4px}
+.multiplier-result-label{font-size:.82rem;color:var(--gray)}
+.footer-note{text-align:center;font-size:.78rem;color:var(--gray);padding:20px 5% 40px;line-height:1.7;max-width:640px;margin:0 auto}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">Little Smiles Marketing Program</div>
+  <h1>The value of attracting<br/><em>one young family</em></h1>
+  <p class="header-sub">See what two parents and two children are worth to your practice over five years — before a single referral or recommendation.</p>
+</div>
+
+<div class="container">
+
+  <div class="section-card">
+    <div class="section-title"><span class="icon">👩‍💼</span> The Parents</div>
+    <p class="section-subtitle">Adults bring ongoing care and optional treatments. Toggle to reflect a realistic scenario.</p>
+    <div class="member-grid">
+      <div class="member-card adult">
+        <div class="member-name">Parent One <span class="badge badge-navy">Adult</span></div>
+        <div class="field">
+          <label>Needs Restorative Work?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="restore1" checked onchange="calculate()"/><span class="tslider"></span></label>
+            <span class="toggle-label" id="restore1-label">Yes — fillings / crown</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Interested in Whitening?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="white1" onchange="calculate()"/><span class="tslider"></span></label>
+            <span class="toggle-label" id="white1-label">No</span>
+          </div>
+        </div>
+      </div>
+      <div class="member-card adult">
+        <div class="member-name">Parent Two <span class="badge badge-navy">Adult</span></div>
+        <div class="field">
+          <label>Needs Restorative Work?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="restore2" onchange="calculate()"/><span class="tslider"></span></label>
+            <span class="toggle-label" id="restore2-label">No</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Interested in Whitening?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="white2" checked onchange="calculate()"/><span class="tslider"></span></label>
+            <span class="toggle-label" id="white2-label">Yes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title"><span class="icon">🧒</span> The Children</div>
+    <p class="section-subtitle">Adjust ages and toggle orthodontic treatment for each child.</p>
+    <div class="member-grid">
+      <div class="member-card">
+        <div class="member-name">Child One — Age 8 <span class="badge badge-teal" id="badge1">Routine Care</span></div>
+        <div class="field">
+          <label>Current Age</label>
+          <input type="number" id="age1" value="8" min="4" max="14" onchange="calculate()"/>
+        </div>
+        <div class="field">
+          <label>Needs Orthodontics?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="ortho1" onchange="calculate()"/><span class="tslider"></span></label>
+            <span class="toggle-label" id="ortho1-label">No</span>
+          </div>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-name">Child Two — Age 6 <span class="badge badge-gold" id="badge2">Including Ortho</span></div>
+        <div class="field">
+          <label>Current Age</label>
+          <input type="number" id="age2" value="6" min="4" max="14" onchange="calculate()"/>
+        </div>
+        <div class="field">
+          <label>Needs Orthodontics?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="ortho2" checked onchange="calculate()"/><span class="tslider"></span></label>
+            <span class="toggle-label" id="ortho2-label">Yes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="assumptions">
+    <h2>Your Practice Fees</h2>
+    <p class="assumptions-note">Adjust to reflect your actual fee schedule. Defaults are conservative Australian averages.</p>
+    <div class="fee-label">Adult Fees</div>
+    <div class="assumptions-grid">
+      <div class="field">
+        <label>Adult Check-up & Clean</label>
+        <input type="number" id="adult-checkup" value="300" min="100" max="800" step="10" onchange="calculate()"/>
+        <div class="hint">2 visits per adult per year</div>
+      </div>
+      <div class="field">
+        <label>Adult X-rays (per year)</label>
+        <input type="number" id="adult-xray" value="110" min="0" max="400" step="10" onchange="calculate()"/>
+        <div class="hint">Annual bitewing x-rays</div>
+      </div>
+      <div class="field">
+        <label>Restorative Work (avg total)</label>
+        <input type="number" id="restore-fee" value="1800" min="0" max="8000" step="100" onchange="calculate()"/>
+        <div class="hint">Fillings, crown or similar — spread over 2 years</div>
+      </div>
+      <div class="field">
+        <label>Teeth Whitening</label>
+        <input type="number" id="white-fee" value="650" min="0" max="2000" step="50" onchange="calculate()"/>
+        <div class="hint">Take-home or in-chair, once-off</div>
+      </div>
+    </div>
+    <div class="fee-label">Children's Fees</div>
+    <div class="assumptions-grid">
+      <div class="field">
+        <label>Child Check-up & Clean</label>
+        <input type="number" id="checkup" value="220" min="50" max="500" step="10" onchange="calculate()"/>
+        <div class="hint">2 visits per child per year</div>
+      </div>
+      <div class="field">
+        <label>Child X-rays (per year)</label>
+        <input type="number" id="xray" value="80" min="0" max="300" step="10" onchange="calculate()"/>
+        <div class="hint">Annual bitewing x-rays</div>
+      </div>
+      <div class="field">
+        <label>Fissure Sealants (once-off)</label>
+        <input type="number" id="sealant" value="280" min="0" max="800" step="20" onchange="calculate()"/>
+        <div class="hint">Applied once, typically ages 6–10</div>
+      </div>
+      <div class="field">
+        <label>Mouthguard (once-off)</label>
+        <input type="number" id="mouthguard" value="300" min="0" max="600" step="20" onchange="calculate()"/>
+        <div class="hint">If child plays contact sport</div>
+      </div>
+      <div class="field">
+        <label>Orthodontic Treatment (total)</label>
+        <input type="number" id="ortho" value="7000" min="2000" max="15000" step="500" onchange="calculate()"/>
+        <div class="hint">Full braces or aligner course</div>
+      </div>
+      <div class="field">
+        <label>Years to Calculate</label>
+        <input type="number" id="years" value="5" min="3" max="10" onchange="calculate()"/>
+        <div class="hint">Projection period</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="results">
+    <div class="results-title" id="results-title">Five-Year Value: The Complete Family</div>
+    <div class="result-total">
+      <div class="result-total-label">Total Family Revenue</div>
+      <div class="result-total-value" id="total-value">$0</div>
+      <div class="result-total-sub" id="total-sub">From two parents and two children over 5 years</div>
+    </div>
+    <div class="result-grid-4">
+      <div class="result-card">
+        <div class="result-card-label">Parent One</div>
+        <div class="result-card-value teal" id="p1-value">$0</div>
+        <div class="result-card-sub" id="p1-sub">Routine + restorative</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-label">Parent Two</div>
+        <div class="result-card-value teal" id="p2-value">$0</div>
+        <div class="result-card-sub" id="p2-sub">Routine + whitening</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-label">Child One</div>
+        <div class="result-card-value" id="kid1-value">$0</div>
+        <div class="result-card-sub" id="kid1-sub">Routine care</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-label">Child Two</div>
+        <div class="result-card-value gold" id="kid2-value">$0</div>
+        <div class="result-card-sub" id="kid2-sub">Including ortho</div>
+      </div>
+    </div>
+    <div class="result-grid-2">
+      <div class="result-card">
+        <div class="result-card-label">Adults Combined</div>
+        <div class="result-card-value" id="adults-total">$0</div>
+        <div class="result-card-sub" id="adults-sub">Two parents over 5 years</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-label">Children Combined</div>
+        <div class="result-card-value" id="kids-total">$0</div>
+        <div class="result-card-sub" id="kids-sub">Two children over 5 years</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-label">Average Per Year</div>
+        <div class="result-card-value" id="avg-value">$0</div>
+        <div class="result-card-sub">Whole family</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-label">Average Per Visit</div>
+        <div class="result-card-value" id="visit-value">$0</div>
+        <div class="result-card-sub" id="visit-sub">Across all appointments</div>
+      </div>
+    </div>
+    <div class="breakdown">
+      <div class="breakdown-title">Year by Year — Whole Family</div>
+      <div id="year-bars"></div>
+    </div>
+  </div>
+
+  <div class="multiplier">
+    <h2>Now multiply it</h2>
+    <p class="multiplier-note">Consistent marketing doesn't bring one family. Adjust the slider to see what attracting more young families means for your practice.</p>
+    <div class="families-value" id="families-display">10</div>
+    <div class="families-label">new families like this</div>
+    <input type="range" class="families-slider" id="families" min="5" max="50" step="5" value="10" oninput="updateMultiplier()"/>
+    <div class="multiplier-result">
+      <div class="multiplier-result-value" id="multiplier-value">$0</div>
+      <div class="multiplier-result-label" id="multiplier-label">Total revenue over 5 years from 10 new families</div>
+    </div>
+  </div>
+
+</div>
+
+<p class="footer-note">All figures are illustrative and based on typical Australian dental fee ranges. Actual revenue will vary by practice, location, and individual patient needs. This calculator is designed to help you understand the long-term value of attracting young families to your practice.</p>
+
+<script>
+function fmt(n){return '$'+Math.round(n).toLocaleString('en-AU')}
+
+function calcAdult(hasRestore,hasWhite,checkup,xray,restoreF,whiteF,years){
+  var y=[];
+  for(var i=0;i<years;i++){
+    var v=checkup*2+xray;
+    if(hasRestore){if(i===0)v+=restoreF*0.5;if(i===1)v+=restoreF*0.5;}
+    if(hasWhite&&i===0)v+=whiteF;
+    y.push(v);
+  }return y;
+}
+
+function calcKid(age,hasOrtho,checkup,xray,sealant,mguard,orthoF,years){
+  var y=[];
+  for(var i=0;i<years;i++){
+    var v=checkup*2+xray;
+    if(i===0&&age+i<=10)v+=sealant;
+    if(i===0)v+=mguard;
+    if(hasOrtho){if(i===1)v+=orthoF*0.5;if(i===2)v+=orthoF*0.5;}
+    y.push(v);
+  }return y;
+}
+
+function g(id){return document.getElementById(id)}
+function set(id,val){g(id).textContent=val}
+
+function calculate(){
+  var years=parseInt(g('years').value)||5;
+  var aCU=parseFloat(g('adult-checkup').value)||300;
+  var aXR=parseFloat(g('adult-xray').value)||110;
+  var rF=parseFloat(g('restore-fee').value)||1800;
+  var wF=parseFloat(g('white-fee').value)||650;
+  var cu=parseFloat(g('checkup').value)||220;
+  var xr=parseFloat(g('xray').value)||80;
+  var sl=parseFloat(g('sealant').value)||280;
+  var mg=parseFloat(g('mouthguard').value)||300;
+  var oF=parseFloat(g('ortho').value)||7000;
+  var a1=parseInt(g('age1').value)||8;
+  var a2=parseInt(g('age2').value)||6;
+  var r1=g('restore1').checked,r2=g('restore2').checked;
+  var w1=g('white1').checked,w2=g('white2').checked;
+  var o1=g('ortho1').checked,o2=g('ortho2').checked;
+
+  set('restore1-label',r1?'Yes — fillings / crown':'No');
+  set('restore2-label',r2?'Yes — fillings / crown':'No');
+  set('white1-label',w1?'Yes':'No');
+  set('white2-label',w2?'Yes':'No');
+  set('ortho1-label',o1?'Yes':'No');
+  set('ortho2-label',o2?'Yes':'No');
+
+  var b1=g('badge1');b1.textContent=o1?'Including Ortho':'Routine Care';b1.className='badge '+(o1?'badge-gold':'badge-teal');
+  var b2=g('badge2');b2.textContent=o2?'Including Ortho':'Routine Care';b2.className='badge '+(o2?'badge-gold':'badge-teal');
+
+  var yp1=calcAdult(r1,w1,aCU,aXR,rF,wF,years);
+  var yp2=calcAdult(r2,w2,aCU,aXR,rF,wF,years);
+  var yk1=calcKid(a1,o1,cu,xr,sl,mg,oF,years);
+  var yk2=calcKid(a2,o2,cu,xr,sl,mg,oF,years);
+
+  var tp1=yp1.reduce((a,b)=>a+b,0),tp2=yp2.reduce((a,b)=>a+b,0);
+  var tk1=yk1.reduce((a,b)=>a+b,0),tk2=yk2.reduce((a,b)=>a+b,0);
+  var tA=tp1+tp2,tK=tk1+tk2,total=tA+tK;
+  var visits=years*2*2+years*2*2;
+
+  set('results-title',years+'-Year Value: The Complete Family');
+  set('total-value',fmt(total));
+  set('total-sub','From two parents and two children over '+years+' years');
+  set('p1-value',fmt(tp1));set('p1-sub',(r1?'Restorative':'Routine')+(w1?' + whitening':''));
+  set('p2-value',fmt(tp2));set('p2-sub',(r2?'Restorative':'Routine')+(w2?' + whitening':''));
+  set('kid1-value',fmt(tk1));set('kid1-sub',o1?'Including orthodontics':'Routine care only');
+  set('kid2-value',fmt(tk2));set('kid2-sub',o2?'Including orthodontics':'Routine care only');
+  set('adults-total',fmt(tA));set('adults-sub','Two parents over '+years+' years');
+  set('kids-total',fmt(tK));set('kids-sub','Two children over '+years+' years');
+  set('avg-value',fmt(total/years));
+  set('visit-value',fmt(total/visits));set('visit-sub',visits+' appointments total');
+
+  var combined=yp1.map((v,i)=>v+yp2[i]+yk1[i]+yk2[i]);
+  var maxY=Math.max(...combined);
+  var html='';
+  for(var i=0;i<years;i++){
+    var pct=maxY>0?(combined[i]/maxY*100):0;
+    html+='<div class="year-row"><div class="year-label">Year '+(i+1)+'</div><div class="year-bar-wrap"><div class="year-bar" style="width:'+pct+'%"></div></div><div class="year-value">'+fmt(combined[i])+'</div></div>';
+  }
+  g('year-bars').innerHTML=html;
+  window._familyTotal=total;
+  updateMultiplier();
+}
+
+function updateMultiplier(){
+  var f=parseInt(g('families').value)||10;
+  var y=parseInt(g('years').value)||5;
+  set('families-display',f);
+  set('multiplier-value',fmt((window._familyTotal||0)*f));
+  set('multiplier-label','Total revenue over '+y+' years from '+f+' new families');
+}
+
+calculate();
+</script>
+</body>
+</html>
