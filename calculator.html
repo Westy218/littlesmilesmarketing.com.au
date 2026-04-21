@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Family Patient Value Calculator | Little Smiles Marketing</title>
+<meta name="description" content="Calculate the lifetime value of a family patient to your dental practice over five years."/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/styles.css"/>
+<link rel="stylesheet" href="../css/calculator.css"/>
+</head>
+<body>
+
+<!-- Shared Header -->
+<div id="site-header"></div>
+
+  <div class="header-label">Little Smiles Marketing Program</div>
+  <h1>The value of attracting<br/><em>one young family</em></h1>
+  <p class="header-sub">See what two parents and two children are worth to your practice over five years — before a single referral or recommendation.</p>
+</div>
+
+<div class="container">
+
+  <div class="section-card">
+    <div class="section-title"><span class="icon">👩‍💼</span> The Parents</div>
+    <p class="section-subtitle">Adults bring ongoing care and optional treatments. Toggle to reflect a realistic scenario.</p>
+    <div class="member-grid">
+      <div class="member-card adult">
+        <div class="member-name">Parent One <span class="badge badge-navy">Adult</span></div>
+        <div class="field">
+          <label>Needs Restorative Work?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="restore1" checked onchange="calculate()"/><span class="tslider"></span></label>
+            <span class="toggle-label" id="restore1-label">Yes — fillings / crown</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Interested in Whitening?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="white1" onchange="calculate()"/><span class="tslider"></span></label>
+            <span class="toggle-label" id="white1-label">No</span>
+          </div>
+        </div>
+      </div>
+      <div class="member-card adult">
+        <div class="member-name">Parent Two <span class="badge badge-navy">Adult</span></div>
+        <div class="field">
+          <label>Needs Restorative Work?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="restore2" onchange="calculate()"/><span class="tslider"></span></label>
+            <span class="toggle-label" id="restore2-label">No</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Interested in Whitening?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="white2" checked onchange="calculate()"/><span class="tslider"></span></label>
+            <span class="toggle-label" id="white2-label">Yes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title"><span class="icon">🧒</span> The Children</div>
+    <p class="section-subtitle">Adjust ages and toggle orthodontic treatment for each child.</p>
+    <div class="member-grid">
+      <div class="member-card">
+        <div class="member-name">Child One — Age 8 <span class="badge badge-teal" id="badge1">Routine Care</span></div>
+        <div class="field">
+          <label>Current Age</label>
+          <input type="number" id="age1" value="8" min="4" max="14" onchange="calculate()"/>
+        </div>
+        <div class="field">
+          <label>Needs Orthodontics?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="ortho1" onchange="calculate()"/><span class="tslider"></span></label>
+            <span class="toggle-label" id="ortho1-label">No</span>
+          </div>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-name">Child Two — Age 6 <span class="badge badge-gold" id="badge2">Including Ortho</span></div>
+        <div class="field">
+          <label>Current Age</label>
+          <input type="number" id="age2" value="6" min="4" max="14" onchange="calculate()"/>
+        </div>
+        <div class="field">
+          <label>Needs Orthodontics?</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="ortho2" checked onchange="calculate()"/><span class="tslider"></span></label>
+            <span class="toggle-label" id="ortho2-label">Yes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="assumptions">
+    <h2>Your Practice Fees</h2>
+    <p class="assumptions-note">Adjust to reflect your actual fee schedule. Defaults are conservative Australian averages.</p>
+    <div class="fee-label">Adult Fees</div>
+    <div class="assumptions-grid">
+      <div class="field">
+        <label>Adult Check-up & Clean</label>
+        <input type="number" id="adult-checkup" value="300" min="100" max="800" step="10" onchange="calculate()"/>
+        <div class="hint">2 visits per adult per year</div>
+      </div>
+      <div class="field">
+        <label>Adult X-rays (per year)</label>
+        <input type="number" id="adult-xray" value="110" min="0" max="400" step="10" onchange="calculate()"/>
+        <div class="hint">Annual bitewing x-rays</div>
+      </div>
+      <div class="field">
+        <label>Restorative Work (avg total)</label>
+        <input type="number" id="restore-fee" value="1800" min="0" max="8000" step="100" onchange="calculate()"/>
+        <div class="hint">Fillings, crown or similar — spread over 2 years</div>
+      </div>
+      <div class="field">
+        <label>Teeth Whitening</label>
+        <input type="number" id="white-fee" value="650" min="0" max="2000" step="50" onchange="calculate()"/>
+        <div class="hint">Take-home or in-chair, once-off</div>
+      </div>
+    </div>
+    <div class="fee-label">Children's Fees</div>
+    <div class="assumptions-grid">
+      <div class="field">
+        <label>Child Check-up & Clean</label>
+        <input type="number" id="checkup" value="220" min="50" max="500" step="10" onchange="calculate()"/>
+        <div class="hint">2 visits per child per year</div>
+      </div>
+      <div class="field">
+        <label>Child X-rays (per year)</label>
+        <input type="number" id="xray" value="80" min="0" max="300" step="10" onchange="calculate()"/>
+        <div class="hint">Annual bitewing x-rays</div>
+      </div>
+      <div class="field">
+        <label>Fissure Sealants (once-off)</label>
+        <input type="number" id="sealant" value="280" min="0" max="800" step="20" onchange="calculate()"/>
+        <div class="hint">Applied once, typically ages 6–10</div>
+      </div>
+      <div class="field">
+        <label>Mouthguard (once-off)</label>
+        <input type="number" id="mouthguard" value="300" min="0" max="600" step="20" onchange="calculate()"/>
+        <div class="hint">If child plays contact sport</div>
+      </div>
+      <div class="field">
+        <label>Orthodontic Treatment (total)</label>
+        <input type="number" id="ortho" value="7000" min="2000" max="15000" step="500" onchange="calculate()"/>
+        <div class="hint">Full braces or aligner course</div>
+      </div>
+      <div class="field">
+        <label>Years to Calculate</label>
+        <input type="number" id="years" value="5" min="3" max="10" onchange="calculate()"/>
+        <div class="hint">Projection period</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="results">
+    <div class="results-title" id="results-title">Five-Year Value: The Complete Family</div>
+    <div class="result-total">
+      <div class="result-total-label">Total Family Revenue</div>
+      <div class="result-total-value" id="total-value">$0</div>
+      <div class="result-total-sub" id="total-sub">From two parents and two children over 5 years</div>
+    </div>
+    <div class="result-grid-4">
+      <div class="result-card">
+        <div class="result-card-label">Parent One</div>
+        <div class="result-card-value teal" id="p1-value">$0</div>
+        <div class="result-card-sub" id="p1-sub">Routine + restorative</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-label">Parent Two</div>
+        <div class="result-card-value teal" id="p2-value">$0</div>
+        <div class="result-card-sub" id="p2-sub">Routine + whitening</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-label">Child One</div>
+        <div class="result-card-value" id="kid1-value">$0</div>
+        <div class="result-card-sub" id="kid1-sub">Routine care</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-label">Child Two</div>
+        <div class="result-card-value gold" id="kid2-value">$0</div>
+        <div class="result-card-sub" id="kid2-sub">Including ortho</div>
+      </div>
+    </div>
+    <div class="result-grid-2">
+      <div class="result-card">
+        <div class="result-card-label">Adults Combined</div>
+        <div class="result-card-value" id="adults-total">$0</div>
+        <div class="result-card-sub" id="adults-sub">Two parents over 5 years</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-label">Children Combined</div>
+        <div class="result-card-value" id="kids-total">$0</div>
+        <div class="result-card-sub" id="kids-sub">Two children over 5 years</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-label">Average Per Year</div>
+        <div class="result-card-value" id="avg-value">$0</div>
+        <div class="result-card-sub">Whole family</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-label">Average Per Visit</div>
+        <div class="result-card-value" id="visit-value">$0</div>
+        <div class="result-card-sub" id="visit-sub">Across all appointments</div>
+      </div>
+    </div>
+    <div class="breakdown">
+      <div class="breakdown-title">Year by Year — Whole Family</div>
+      <div id="year-bars"></div>
+    </div>
+  </div>
+
+  <div class="multiplier">
+    <h2>Now multiply it</h2>
+    <p class="multiplier-note">Consistent marketing doesn't bring one family. Adjust the slider to see what attracting more young families means for your practice.</p>
+    <div class="families-value" id="families-display">10</div>
+    <div class="families-label">new families like this</div>
+    <input type="range" class="families-slider" id="families" min="5" max="50" step="5" value="10" oninput="updateMultiplier()"/>
+    <div class="multiplier-result">
+      <div class="multiplier-result-value" id="multiplier-value">$0</div>
+      <div class="multiplier-result-label" id="multiplier-label">Total revenue over 5 years from 10 new families</div>
+    </div>
+  </div>
+
+</div>
+
+<p class="footer-note">All figures are illustrative and based on typical Australian dental fee ranges. Actual revenue will vary by practice, location, and individual patient needs. This calculator is designed to help you understand the long-term value of attracting young families to your practice.</p>
+
+
+<!-- Back to main site -->
+<div style="text-align:center;padding:30px 5% 0">
+  <a href="../index.html#conv" style="display:inline-flex;align-items:center;gap:9px;background:var(--navy);color:var(--white);text-decoration:none;padding:13px 28px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.04em;" onmouseover="this.style.background='#22495e'" onmouseout="this.style.background='var(--navy)'">
+    ← Start the Conversation
+  </a>
+</div>
+
+<!-- Shared Footer -->
+<div id="site-footer"></div>
+
+<script src="../js/components.js"></script>
+<script>
+function fmt(n){return '$'+Math.round(n).toLocaleString('en-AU')}
+
+function calcAdult(hasRestore,hasWhite,checkup,xray,restoreF,whiteF,years){
+  var y=[];
+  for(var i=0;i<years;i++){
+    var v=checkup*2+xray;
+    if(hasRestore){if(i===0)v+=restoreF*0.5;if(i===1)v+=restoreF*0.5;}
+    if(hasWhite&&i===0)v+=whiteF;
+    y.push(v);
+  }return y;
+}
+
+function calcKid(age,hasOrtho,checkup,xray,sealant,mguard,orthoF,years){
+  var y=[];
+  for(var i=0;i<years;i++){
+    var v=checkup*2+xray;
+    if(i===0&&age+i<=10)v+=sealant;
+    if(i===0)v+=mguard;
+    if(hasOrtho){if(i===1)v+=orthoF*0.5;if(i===2)v+=orthoF*0.5;}
+    y.push(v);
+  }return y;
+}
+
+function g(id){return document.getElementById(id)}
+function set(id,val){g(id).textContent=val}
+
+function calculate(){
+  var years=parseInt(g('years').value)||5;
+  var aCU=parseFloat(g('adult-checkup').value)||300;
+  var aXR=parseFloat(g('adult-xray').value)||110;
+  var rF=parseFloat(g('restore-fee').value)||1800;
+  var wF=parseFloat(g('white-fee').value)||650;
+  var cu=parseFloat(g('checkup').value)||220;
+  var xr=parseFloat(g('xray').value)||80;
+  var sl=parseFloat(g('sealant').value)||280;
+  var mg=parseFloat(g('mouthguard').value)||300;
+  var oF=parseFloat(g('ortho').value)||7000;
+  var a1=parseInt(g('age1').value)||8;
+  var a2=parseInt(g('age2').value)||6;
+  var r1=g('restore1').checked,r2=g('restore2').checked;
+  var w1=g('white1').checked,w2=g('white2').checked;
+  var o1=g('ortho1').checked,o2=g('ortho2').checked;
+
+  set('restore1-label',r1?'Yes — fillings / crown':'No');
+  set('restore2-label',r2?'Yes — fillings / crown':'No');
+  set('white1-label',w1?'Yes':'No');
+  set('white2-label',w2?'Yes':'No');
+  set('ortho1-label',o1?'Yes':'No');
+  set('ortho2-label',o2?'Yes':'No');
+
+  var b1=g('badge1');b1.textContent=o1?'Including Ortho':'Routine Care';b1.className='badge '+(o1?'badge-gold':'badge-teal');
+  var b2=g('badge2');b2.textContent=o2?'Including Ortho':'Routine Care';b2.className='badge '+(o2?'badge-gold':'badge-teal');
+
+  var yp1=calcAdult(r1,w1,aCU,aXR,rF,wF,years);
+  var yp2=calcAdult(r2,w2,aCU,aXR,rF,wF,years);
+  var yk1=calcKid(a1,o1,cu,xr,sl,mg,oF,years);
+  var yk2=calcKid(a2,o2,cu,xr,sl,mg,oF,years);
+
+  var tp1=yp1.reduce((a,b)=>a+b,0),tp2=yp2.reduce((a,b)=>a+b,0);
+  var tk1=yk1.reduce((a,b)=>a+b,0),tk2=yk2.reduce((a,b)=>a+b,0);
+  var tA=tp1+tp2,tK=tk1+tk2,total=tA+tK;
+  var visits=years*2*2+years*2*2;
+
+  set('results-title',years+'-Year Value: The Complete Family');
+  set('total-value',fmt(total));
+  set('total-sub','From two parents and two children over '+years+' years');
+  set('p1-value',fmt(tp1));set('p1-sub',(r1?'Restorative':'Routine')+(w1?' + whitening':''));
+  set('p2-value',fmt(tp2));set('p2-sub',(r2?'Restorative':'Routine')+(w2?' + whitening':''));
+  set('kid1-value',fmt(tk1));set('kid1-sub',o1?'Including orthodontics':'Routine care only');
+  set('kid2-value',fmt(tk2));set('kid2-sub',o2?'Including orthodontics':'Routine care only');
+  set('adults-total',fmt(tA));set('adults-sub','Two parents over '+years+' years');
+  set('kids-total',fmt(tK));set('kids-sub','Two children over '+years+' years');
+  set('avg-value',fmt(total/years));
+  set('visit-value',fmt(total/visits));set('visit-sub',visits+' appointments total');
+
+  var combined=yp1.map((v,i)=>v+yp2[i]+yk1[i]+yk2[i]);
+  var maxY=Math.max(...combined);
+  var html='';
+  for(var i=0;i<years;i++){
+    var pct=maxY>0?(combined[i]/maxY*100):0;
+    html+='<div class="year-row"><div class="year-label">Year '+(i+1)+'</div><div class="year-bar-wrap"><div class="year-bar" style="width:'+pct+'%"></div></div><div class="year-value">'+fmt(combined[i])+'</div></div>';
+  }
+  g('year-bars').innerHTML=html;
+  window._familyTotal=total;
+  updateMultiplier();
+}
+
+function updateMultiplier(){
+  var f=parseInt(g('families').value)||10;
+  var y=parseInt(g('years').value)||5;
+  set('families-display',f);
+  set('multiplier-value',fmt((window._familyTotal||0)*f));
+  set('multiplier-label','Total revenue over '+y+' years from '+f+' new families');
+}
+
+calculate();
+</script>
+</body>
+</html>
